@@ -224,7 +224,7 @@ export function MonthCalendar({
                     return (
                       <span
                         key={sprint.id}
-                        className="inline-flex items-center gap-1 rounded px-1 py-0.5 text-[7.5px] font-medium"
+                        className="month-sprint-chip inline-flex items-center gap-1 rounded px-1 py-0.5 text-[7.5px] font-medium"
                         style={{ backgroundColor: `${project?.color ?? '#111827'}12`, color: project?.color ?? '#111827' }}
                         title={`${sprint.name} starts · ${project?.name}`}
                       >

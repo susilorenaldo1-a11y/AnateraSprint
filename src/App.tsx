@@ -150,6 +150,9 @@ function Shell() {
         onCreated={(projectId) => {
           window.setTimeout(() => setProjectWorkspaceId(projectId), 160)
         }}
+        onDeleted={(projectId) => {
+          if (projectWorkspaceId === projectId) setProjectWorkspaceId(null)
+        }}
       />
       <ProjectWorkspace
         projectId={projectWorkspaceId}

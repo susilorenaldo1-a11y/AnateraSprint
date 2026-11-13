@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import {
+  AlertTriangle,
   BriefcaseBusiness,
   Building2,
   CalendarDays,
@@ -12,6 +13,7 @@ import {
   Palette,
   Phone,
   Plus,
+  Trash2,
   UserRound,
 } from 'lucide-react'
 import type { Currency, Project, ProjectStatus } from '../types'
@@ -28,13 +30,15 @@ export function ProjectModal({
   onClose,
   project,
   onCreated,
+  onDeleted,
 }: {
   open: boolean
   onClose: () => void
   project?: Project | null
   onCreated?: (projectId: string) => void
+  onDeleted?: (projectId: string) => void
 }) {
-  const { data, addProject, updateProject, notify } = useWorkspace()
+  const { data, addProject, updateProject, deleteProject, notify } = useWorkspace()
   const { t, language } = useI18n()
   const [name, setName] = useState('')
   const [code, setCode] = useState('')
@@ -55,7 +59,14 @@ export function ProjectModal({
   const [startDate, setStartDate] = useState(todayKey())
   const [targetEndDate, setTargetEndDate] = useState(shiftDateKey(todayKey(), 45))
   const [error, setError] = useState('')
+  const [confirmingDelete, setConfirmingDelete] = useState(false)
   const editing = Boolean(project)
+  const projectSprintCount = project
+    ? data.sprints.filter((sprint) => sprint.projectId === project.id).length
+    : 0
+  const projectTaskCount = project
+    ? data.tasks.filter((task) => task.projectId === project.id).length
+    : 0
 
   useEffect(() => {
     if (!open) return
@@ -78,6 +89,7 @@ export function ProjectModal({
     setStartDate(project?.projectDetails?.startDate ?? todayKey())
     setTargetEndDate(project?.projectDetails?.targetEndDate ?? shiftDateKey(todayKey(), 45))
     setError('')
+    setConfirmingDelete(false)
   }, [open, project, data.members, data.projects.length])
 
   function submit(event: FormEvent) {
@@ -164,6 +176,14 @@ export function ProjectModal({
     onCreated?.(created.id)
   }
 
+  function handleDelete() {
+    if (!project) return
+    deleteProject(project.id)
+    notify(t('{name} deleted.', { name: project.name }), 'success')
+    onClose()
+    onDeleted?.(project.id)
+  }
+
   return (
     <Modal
       open={open}
@@ -176,15 +196,26 @@ export function ProjectModal({
       }
       width="max-w-[780px]"
       footer={
-        <>
-          <button type="button" className="btn btn-secondary" onClick={onClose}>
-            {t('Cancel')}
-          </button>
-          <button type="submit" form="project-form" className="btn btn-primary">
-            {editing ? <Check size={13} /> : <Plus size={13} />}
-            {editing ? t('Save changes') : t('Create project')}
-          </button>
-        </>
+        confirmingDelete ? (
+          <>
+            <button type="button" className="btn btn-secondary" onClick={() => setConfirmingDelete(false)}>
+              {t('Keep project')}
+            </button>
+            <button type="button" className="btn btn-danger" onClick={handleDelete}>
+              <Trash2 size={13} /> {t('Delete permanently')}
+            </button>
+          </>
+        ) : (
+          <>
+            <button type="button" className="btn btn-secondary" onClick={onClose}>
+              {t('Cancel')}
+            </button>
+            <button type="submit" form="project-form" className="btn btn-primary">
+              {editing ? <Check size={13} /> : <Plus size={13} />}
+              {editing ? t('Save changes') : t('Create project')}
+            </button>
+          </>
+        )
       }
     >
       <form id="project-form" onSubmit={submit} className="space-y-5">
@@ -462,6 +493,67 @@ export function ProjectModal({
             </label>
           </div>
         </section>
+
+        {editing && project && (
+          <section
+            className="relative overflow-hidden rounded-xl border p-3.5"
+            style={{
+              backgroundColor: 'var(--danger-soft)',
+              borderColor: 'color-mix(in srgb, var(--danger) 26%, transparent)',
+            }}
+          >
+            <div className="flex items-start gap-3">
+              <span
+                className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
+                style={{
+                  backgroundColor: 'color-mix(in srgb, var(--danger) 12%, transparent)',
+                  color: 'var(--danger)',
+                }}
+              >
+                <AlertTriangle size={14} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.1em] text-ink">
+                    {t('Danger zone')}
+                  </h3>
+                  <span
+                    className="rounded-full px-1.5 py-0.5 font-mono text-[8px] font-semibold uppercase tracking-[0.08em]"
+                    style={{
+                      backgroundColor: 'color-mix(in srgb, var(--danger) 12%, transparent)',
+                      color: 'var(--danger)',
+                    }}
+                  >
+                    {t('Irreversible')}
+                  </span>
+                </div>
+                <p className="mt-1 max-w-[520px] text-[10.5px] leading-relaxed text-muted">
+                  {t(
+                    'This permanently deletes {name} and removes its {sprints} sprints and {tasks} tasks, including checklists and comments.',
+                    { name: project.name, sprints: projectSprintCount, tasks: projectTaskCount },
+                  )}
+                </p>
+                {!confirmingDelete ? (
+                  <button
+                    type="button"
+                    onClick={() => setConfirmingDelete(true)}
+                    className="mt-2.5 inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[10.5px] font-semibold transition-all hover:brightness-95"
+                    style={{ borderColor: 'var(--danger)', color: 'var(--danger)' }}
+                  >
+                    <Trash2 size={11} /> {t('Delete project')}
+                  </button>
+                ) : (
+                  <p
+                    className="mt-2.5 flex items-center gap-1.5 text-[10.5px] font-medium"
+                    style={{ color: 'var(--danger)' }}
+                  >
+                    <AlertTriangle size={11} /> {t('Confirm with “Delete permanently” below.')}
+                  </p>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
 
         {error && (
           <div className="rounded-lg border border-[#fecdd3] bg-[#fff1f2] px-3 py-2 text-[12px] text-[#be123c]">

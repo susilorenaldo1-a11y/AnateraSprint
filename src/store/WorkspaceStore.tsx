@@ -115,6 +115,7 @@ interface WorkspaceContextValue {
   removeSubtask: (taskId: string, subtaskId: string) => void
   addProject: (input: ProjectInput) => Project
   updateProject: (id: string, patch: Partial<Project>) => void
+  deleteProject: (id: string) => void
   addSprint: (input: SprintInput) => Sprint
   updateSprint: (id: string, patch: Partial<Sprint>) => void
   loadDemo: () => void
@@ -519,6 +520,25 @@ export function WorkspaceProvider({ children, user }: { children: ReactNode; use
     }))
   }, [])
 
+  const deleteProject = useCallback((id: string) => {
+    const deletedSprintIds = new Set(
+      data.sprints.filter((sprint) => sprint.projectId === id).map((sprint) => sprint.id),
+    )
+    setData((current) => ({
+      ...current,
+      projects: current.projects.filter((project) => project.id !== id),
+      sprints: current.sprints.filter((sprint) => sprint.projectId !== id),
+      tasks: current.tasks.filter((task) => task.projectId !== id),
+    }))
+    setUi((current) => ({
+      projectFilter: current.projectFilter === id ? 'all' : current.projectFilter,
+      sprintFilter:
+        current.projectFilter === id || deletedSprintIds.has(current.sprintFilter)
+          ? 'active'
+          : current.sprintFilter,
+    }))
+  }, [data.sprints])
+
   const addSprint = useCallback(
     (input: SprintInput): Sprint => {
       const projectSprints = data.sprints.filter((sprint) => sprint.projectId === input.projectId)
@@ -618,6 +638,7 @@ export function WorkspaceProvider({ children, user }: { children: ReactNode; use
       removeSubtask,
       addProject,
       updateProject,
+      deleteProject,
       addSprint,
       updateSprint,
       loadDemo,
@@ -646,6 +667,7 @@ export function WorkspaceProvider({ children, user }: { children: ReactNode; use
       removeSubtask,
       addProject,
       updateProject,
+      deleteProject,
       addSprint,
       updateSprint,
       loadDemo,

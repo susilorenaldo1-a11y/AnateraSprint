@@ -134,8 +134,8 @@ export function TaskComposer({
       footer={
         <>
           <span className="mr-auto hidden items-center gap-1.5 text-[10.5px] text-subtle sm:flex">
-            <kbd className="rounded border border-line bg-white px-1.5 py-0.5 font-mono text-[9px]">âŒ˜</kbd>
-            <kbd className="rounded border border-line bg-white px-1.5 py-0.5 font-mono text-[9px]">â†µ</kbd>
+            <kbd className="rounded border border-line bg-white px-1.5 py-0.5 font-mono text-[9px]">⌘</kbd>
+            <kbd className="rounded border border-line bg-white px-1.5 py-0.5 font-mono text-[9px]">↵</kbd>
             {language === 'id' ? 'untuk membuat' : 'to create'}
           </span>
           <button type="button" className="btn btn-secondary" onClick={onClose}>

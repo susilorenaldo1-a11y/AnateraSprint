@@ -491,4 +491,15 @@ export const idTranslations: Record<string, string> = {
   'No bills yet': 'Belum ada tagihan',
   'Add a contract value to a project to see its bill.': 'Tambahkan nilai kontrak pada proyek untuk melihat tagihannya.',
   'Project bills and payments': 'Tagihan dan pembayaran proyek',
+
+  // Project deletion
+  'Danger zone': 'Zona berbahaya',
+  Irreversible: 'Tidak dapat dibatalkan',
+  'Delete project': 'Hapus proyek',
+  'Keep project': 'Pertahankan proyek',
+  'Delete permanently': 'Hapus permanen',
+  'This permanently deletes {name} and removes its {sprints} sprints and {tasks} tasks, including checklists and comments.':
+    'Ini akan menghapus {name} secara permanen beserta {sprints} sprint dan {tasks} tugas, termasuk checklist dan komentar.',
+  'Confirm with “Delete permanently” below.': 'Konfirmasi dengan “Hapus permanen” di bawah.',
+  '{name} deleted.': '{name} dihapus.',
 }

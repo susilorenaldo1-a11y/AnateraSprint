@@ -60,16 +60,17 @@ function FilterSelect({
   return (
     <label
       className={cn(
-        'relative flex h-8 min-w-0 items-center gap-1.5 rounded-lg border bg-white pl-2.5 pr-6 transition-colors',
-        active ? 'border-[#d8d2ff] bg-[#fbfaff]' : 'border-line hover:border-line-strong',
+        'kanban-filter relative flex h-8 min-w-0 items-center gap-1.5 rounded-lg border bg-surface pl-2.5 pr-6 transition-colors',
+        active ? 'border-[#d8d2ff]' : 'border-line hover:border-line-strong',
       )}
+      style={active ? { backgroundColor: 'var(--accent-soft)' } : undefined}
       aria-label={label}
     >
       <span className={cn('shrink-0', active ? 'text-[#6d28d9]' : 'text-subtle')}>{icon}</span>
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="max-w-[148px] cursor-pointer appearance-none truncate border-0 bg-transparent py-0 text-[10.5px] font-medium text-ink outline-none"
+        className="kanban-filter-select max-w-[148px] cursor-pointer appearance-none truncate border-0 bg-transparent py-0 text-[10.5px] font-medium text-ink outline-none"
       >
         {children}
       </select>
@@ -428,7 +429,7 @@ export function Board() {
             </option>
           ))}
         </FilterSelect>
-        <div className="relative flex h-8 min-w-[150px] flex-1 items-center rounded-lg border border-line bg-white pl-8 pr-7 transition-colors focus-within:border-[#d8d2ff] sm:max-w-[210px]">
+        <div className="relative flex h-8 min-w-[150px] flex-1 items-center rounded-lg border border-line bg-surface pl-8 pr-7 transition-colors focus-within:border-[#d8d2ff] sm:max-w-[210px]">
           <Search size={12} className="pointer-events-none absolute left-2.5 text-subtle" />
           <input
             value={search}

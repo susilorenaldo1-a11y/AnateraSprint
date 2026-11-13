@@ -367,6 +367,7 @@ export function SprintTimeline({
                             }}
                             className={cn(
                               'pointer-events-auto group/bar relative flex h-[28px] w-full cursor-grab items-center gap-1.5 overflow-hidden rounded-[7px] border px-2 shadow-[0_1px_2px_rgba(17,24,39,0.04)] transition-opacity active:cursor-grabbing',
+                              !isDone && !isOverdue && 'timeline-task-bar',
                               draggingId === task.id && 'opacity-40',
                               isDone
                                 ? 'border-[#bbf7d0] bg-[#f0fdf4] text-[#15803d]'
