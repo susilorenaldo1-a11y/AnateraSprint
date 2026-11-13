@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#FAFAFA" />
+    <meta
+      name="description"
+      content="Anatera Sprint OS — project, sprint and delivery tracking for two-week build cycles."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <title>Anatera Sprint OS</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      ;(() => {
+        try {
+          const theme = localStorage.getItem('anatera-sprint-os:theme')
+          const dark = theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          document.documentElement.classList.toggle('dark', dark)
+          document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+          document.documentElement.style.colorScheme = dark ? 'dark' : 'light'
+          const language = localStorage.getItem('anatera-sprint-os:language')
+          document.documentElement.lang = language === 'id' ? 'id' : 'en'
+        } catch (error) {}
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
