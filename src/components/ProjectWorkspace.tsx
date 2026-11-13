@@ -44,12 +44,12 @@ const STEP_META: { id: FlowStep; label: string; description: string; icon: typeo
   { id: 'start', label: 'Start project', description: 'Kick off delivery', icon: Rocket },
 ]
 
-const MAX_FILE_SIZE = 8 * 1024 * 1024
+const MAX_FILE_SIZE = 4 * 1024 * 1024
 
-function readDocument(file: File): Promise<ProjectDocument> {
+function readLocalDocument(file: File): Promise<ProjectDocument> {
   return new Promise((resolve, reject) => {
     if (file.size > MAX_FILE_SIZE) {
-      reject(new Error('The file is larger than 8 MB.'))
+      reject(new Error('The file is larger than 4 MB.'))
       return
     }
     const reader = new FileReader()
@@ -66,6 +66,43 @@ function readDocument(file: File): Promise<ProjectDocument> {
     reader.onerror = () => reject(new Error('Could not read that file.'))
     reader.readAsDataURL(file)
   })
+}
+
+async function uploadDocumentFile(file: File): Promise<ProjectDocument> {
+  if (file.size > MAX_FILE_SIZE) {
+    throw new Error('The file is larger than 4 MB.')
+  }
+
+  try {
+    const response = await fetch('/api/uploads', {
+      method: 'POST',
+      headers: {
+        'Content-Type': file.type || 'application/octet-stream',
+        'x-file-name': encodeURIComponent(file.name),
+        'x-file-type': file.type || 'application/octet-stream',
+      },
+      body: file,
+    })
+    if (response.ok) {
+      const payload = (await response.json()) as {
+        document: { name: string; mimeType: string; size: number; url: string; uploadedAt: string }
+      }
+      return {
+        id: `doc-${crypto.randomUUID().slice(0, 8)}`,
+        ...payload.document,
+      }
+    }
+    if (response.status === 404 || response.status === 405 || response.status === 501) {
+      return readLocalDocument(file)
+    }
+    const payload = await response.json().catch(() => null)
+    throw new Error(payload?.error || 'Upload failed.')
+  } catch (error) {
+    if (error instanceof TypeError) {
+      return readLocalDocument(file)
+    }
+    throw error
+  }
 }
 
 function DocumentZone({
@@ -98,8 +135,10 @@ function DocumentZone({
           </p>
         </div>
         <a
-          href={document.dataUrl}
+          href={document.url ?? document.dataUrl ?? '#'}
           download={document.name}
+          target="_blank"
+          rel="noreferrer"
           className="flex h-7 w-7 items-center justify-center rounded-md text-muted transition-colors hover:bg-white hover:text-ink"
           aria-label="Download document"
         >
@@ -145,7 +184,7 @@ function DocumentZone({
         </span>
         <span className="text-[11.5px] font-medium text-ink">{label}</span>
         <span className="text-[9.5px] text-subtle">{hint}</span>
-        <span className="text-[9.5px] text-subtle">PDF, DOC, DOCX {language === 'id' ? 'atau gambar' : 'or image'} · max 8 MB</span>
+        <span className="text-[9.5px] text-subtle">PDF, DOC, DOCX {language === 'id' ? 'atau gambar' : 'or image'} · max 4 MB</span>
       </button>
       <input
         ref={inputRef}
@@ -238,7 +277,7 @@ export function ProjectWorkspace({
 
   async function uploadDocument(file: File, target: 'proposal' | 'agreement') {
     try {
-      const document = await readDocument(file)
+      const document = await uploadDocumentFile(file)
       updateWorkflow((workflow) => ({
         ...workflow,
         [target]: {

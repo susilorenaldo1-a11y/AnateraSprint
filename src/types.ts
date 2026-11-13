@@ -9,8 +9,9 @@ export interface ProjectDocument {
   name: string
   mimeType: string
   size: number
-  dataUrl: string
   uploadedAt: string
+  dataUrl?: string
+  url?: string
 }
 
 export interface ClientContact {

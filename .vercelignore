@@ -1,0 +1,9 @@
+node_modules
+dist
+/data
+.env*
+.vercel
+.git
+*.log
+*.tsbuildinfo
+.screenshots

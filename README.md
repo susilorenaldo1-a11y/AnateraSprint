@@ -36,6 +36,26 @@ A new account starts with the Anatera demo workspace and automatically saves it 
 
 Cross-device sync requires the app server to be reachable from the other device. The dev and production servers bind `0.0.0.0`, so another phone/laptop on the same network can use the LAN URL. For internet access, deploy the app behind HTTPS and set `COOKIE_SECURE=true`.
 
+## Vercel + Neon deployment
+
+The repository is ready for Vercel:
+
+- Static React build: `dist/`
+- API: Vercel Node functions under `api/`
+- Database: Neon Postgres (connected through the Vercel Neon integration, exposed as `DATABASE_URL`)
+- Document storage: Vercel Blob (`BLOB_READ_WRITE_TOKEN`)
+- `vercel.json` sets the Vite framework, build/output paths, API duration and SPA rewrites.
+
+```bash
+vercel link
+vercel env pull .env.local
+vercel deploy          # preview
+vercel deploy --prod   # production
+```
+
+`COOKIE_SECURE=true` is set for Production and Preview. The local `pnpm dev` server remains SQLite-backed for zero-dependency development; the deployed app uses Neon and Blob automatically.
+
+
 ## What's included
 
 - **Projects Overview** — active project count, cross-project sprint pulse, project health cards, blockers, team avatars, attention queue, upcoming handovers, and a compact delivery calendar.
@@ -64,7 +84,8 @@ Documents are stored as data URLs in the workspace snapshot (8 MB per file) and 
 ## Structure
 
 ```text
-server/             Express API, SQLite schema/session auth, Vite and production servers
+api/                Vercel serverless endpoints backed by Neon Postgres and Vercel Blob
+server/             Local Express API, SQLite schema/session auth, Vite and production servers
 src/auth/           Session provider and account screen
 src/components/     App shell, project workspace, Kanban, calendar, drawer and dialogs
 src/data/seed.ts    Realistic Anatera 2-week sprint demo data
