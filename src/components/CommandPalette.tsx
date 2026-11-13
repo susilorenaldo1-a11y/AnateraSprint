@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Archive,
+  Receipt,
   CalendarDays,
   Columns3,
   CornerDownLeft,
@@ -117,6 +118,14 @@ export function CommandPalette({
         description: t('14-day timeline and monthly view'),
         icon: <CalendarDays size={15} />,
         action: () => navigate('/calendar'),
+      },
+      {
+        id: 'nav-billing',
+        group: 'Navigate',
+        label: t('Billing'),
+        description: t('Project bills and payments'),
+        icon: <Receipt size={15} />,
+        action: () => navigate('/billing'),
       },
       {
         id: 'nav-archive',

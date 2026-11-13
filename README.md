@@ -65,6 +65,7 @@ vercel deploy --prod   # production
 - **Task Drawer** — editable title, description, status, priority, assignee, story points, blocked state, start/due dates, checklists, account-aware comments and delete.
 - **Sprint Calendar** — a default 14-day timeline with project swimlanes, Day 7 check-in and Day 14 handover milestones, plus a monthly calendar with sprint start/end markers and task deadlines. Drag deadline chips or timeline bars to reschedule.
 - **Sprint Archive** — completed sprint history, velocity, story points shipped and per-project delivery groups.
+- **Billing** — contract value, collected and invoiced totals, outstanding cash by due month, overdue milestones, and project-by-project 50/40/10 payment tracking with currency switching.
 - **Sprint engine** — new sprints default to start + 13 days, with manual override and a warning for non-standard windows.
 - **Dark mode** — persisted light/dark/system themes with dark-specific tokens and component surface remapping.
 - **Bahasa Indonesia** — persisted English/Indonesian interface with localized dates, statuses, priorities, navigation and workflow copy. Demo project/task content remains intact as editable data.

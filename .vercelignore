@@ -7,3 +7,11 @@ dist
 *.log
 *.tsbuildinfo
 .screenshots
+
+# Local design artifacts/backups
+/Overview.tsx
+/charts.tsx
+/translations.ts
+/_.gitignore
+/anatera-visual-upgrade.patch
+/preview-*.png

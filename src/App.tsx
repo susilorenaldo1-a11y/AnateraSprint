@@ -15,6 +15,7 @@ import { Overview } from './pages/Overview'
 import { Board } from './pages/Board'
 import { Calendar } from './pages/Calendar'
 import { Archive } from './pages/Archive'
+import { Billing } from './pages/Billing'
 import { useWorkspace } from './store/WorkspaceStore'
 import type { Project } from './types'
 
@@ -199,6 +200,7 @@ export default function App() {
         <Route index element={<Overview />} />
         <Route path="board" element={<Board />} />
         <Route path="calendar" element={<Calendar />} />
+        <Route path="billing" element={<Billing />} />
         <Route path="archive" element={<Archive />} />
         <Route path="*" element={<Overview />} />
       </Route>

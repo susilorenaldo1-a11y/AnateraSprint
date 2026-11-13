@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 import {
   ArrowUpRight,
   Archive,
+  Receipt,
   CalendarDays,
   Cloud,
   CloudOff,
@@ -23,6 +24,7 @@ const navItems = [
   { to: '/', label: 'Projects Overview', icon: LayoutDashboard, end: true },
   { to: '/board', label: 'Kanban Board', icon: Columns3 },
   { to: '/calendar', label: 'Sprint Calendar', icon: CalendarDays },
+  { to: '/billing', label: 'Billing', icon: Receipt },
   { to: '/archive', label: 'Sprint Archive', icon: Archive },
 ]
 

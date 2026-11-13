@@ -34,6 +34,7 @@ const pageNames: Record<string, string> = {
   '/': 'Overview',
   '/board': 'Kanban Board',
   '/calendar': 'Sprint Calendar',
+  '/billing': 'Billing',
   '/archive': 'Sprint Archive',
 }
 

@@ -469,4 +469,26 @@ export const idTranslations: Record<string, string> = {
   'Day 1–14': 'Hari 1–14',
   'Blocked, overdue or due today across live sprints.': 'Terhambat, terlambat, atau jatuh tempo hari ini di sprint live.',
   'No blockers, overdue work or due-today items.': 'Tidak ada hambatan, pekerjaan terlambat, atau tugas jatuh tempo hari ini.',
+
+  // Overview charts
+  Workload: 'Beban kerja',
+  Velocity: 'Kecepatan',
+  'View blocker': 'Lihat hambatan',
+  'Review / QA': 'Review / QA',
+
+  // Billing
+  Billing: 'Tagihan',
+  Invoiced: 'Ditagih',
+  Invoice: 'Tagih',
+  Undo: 'Urungkan',
+  Retention: 'Retensi',
+  Completion: 'Penyelesaian',
+  'To invoice': 'Belum ditagih',
+  Collection: 'Penagihan',
+  'Cash due': 'Jatuh tempo',
+  Later: 'Nanti',
+  'Project bills': 'Tagihan proyek',
+  'No bills yet': 'Belum ada tagihan',
+  'Add a contract value to a project to see its bill.': 'Tambahkan nilai kontrak pada proyek untuk melihat tagihannya.',
+  'Project bills and payments': 'Tagihan dan pembayaran proyek',
 }
